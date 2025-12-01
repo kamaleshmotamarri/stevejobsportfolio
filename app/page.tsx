@@ -1,0 +1,526 @@
+'use client';
+
+import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
+import { ChevronRight, ChevronDown, ExternalLink, Menu, X, ArrowUp } from 'lucide-react';
+
+export default function Home() {
+  const [activeSection, setActiveSection] = useState('hero');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const heroRef = useRef(null);
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 500], [0, 150]);
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  // Active section detection
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'principles', 'products', 'journey', 'contact'];
+      const scrollPosition = window.scrollY + 300;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const navHeight = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+      setMobileMenuOpen(false);
+    }
+  };
+
+  const products = [
+    {
+      id: 'apple-1',
+      name: 'Apple I',
+      year: '1976',
+      description: 'The first product from Apple Computer, hand-built by Steve Wozniak.',
+      problem: 'Computers were expensive, complex kits that required technical expertise to assemble.',
+      solution: 'A fully assembled circuit board that could be connected to a TV and keyboard, making computing more accessible.',
+      impact: 'The foundation of Apple Computer and the beginning of the personal computer revolution.',
+      color: 'from-amber-400 to-orange-600'
+    },
+    {
+      id: 'apple-ii',
+      name: 'Apple II',
+      year: '1977',
+      description: 'The machine that ignited the personal computer revolution.',
+      problem: 'Computers were inaccessible, complex beasts for hobbyists only.',
+      solution: 'A complete, friendly system with color graphics that invited anyone to create.',
+      impact: 'Democratized computing, bringing technology from the lab to the living room.',
+      color: 'from-green-400 to-emerald-600'
+    },
+    {
+      id: 'macintosh',
+      name: 'Macintosh',
+      year: '1984',
+      description: 'The computer for the rest of us.',
+      problem: 'Command lines were a barrier to entry for creative minds.',
+      solution: 'A graphical user interface controlled by a mouse. Intuitive. Human.',
+      impact: 'Established the paradigm of modern computing: windows, icons, menus, pointer.',
+      color: 'from-blue-400 to-indigo-600'
+    },
+    {
+      id: 'ipod',
+      name: 'iPod',
+      year: '2001',
+      description: '1,000 songs in your pocket.',
+      problem: 'Digital music players were clunky, with terrible user interfaces.',
+      solution: 'Seamless sync, a revolutionary scroll wheel, and beautiful industrial design.',
+      impact: 'Saved the music industry and paved the way for the mobile revolution.',
+      color: 'from-pink-400 to-rose-600'
+    },
+    {
+      id: 'iphone',
+      name: 'iPhone',
+      year: '2007',
+      description: 'An iPod, a phone, and an internet communicator.',
+      problem: 'Smartphones were not smart, and they were not easy to use.',
+      solution: 'Multi-touch interface. No stylus. The internet in your pocket.',
+      impact: 'Changed everything. How we live, work, play, and connect.',
+      color: 'from-purple-400 to-violet-600'
+    },
+    {
+      id: 'pixar',
+      name: 'Toy Story',
+      year: '1995',
+      description: 'To infinity and beyond.',
+      problem: 'Animation was limited by the constraints of hand-drawn cells.',
+      solution: 'The first feature-length computer-animated film. A new medium for storytelling.',
+      impact: 'Revolutionized the film industry and proved technology could have a soul.',
+      color: 'from-orange-400 to-amber-600'
+    },
+  ];
+
+  const principles = [
+    {
+      title: 'Focus',
+      description: 'Deciding what not to do is as important as deciding what to do.',
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <circle cx="12" cy="12" r="3" fill="currentColor" />
+        </svg>
+      )
+    },
+    {
+      title: 'Simplicity',
+      description: 'Simplicity is the ultimate sophistication. It takes a lot of hard work to make something simple.',
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+        </svg>
+      )
+    },
+    {
+      title: 'Empathy',
+      description: 'We will truly understand their needs better than any other company.',
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+      )
+    },
+    {
+      title: 'Imputation',
+      description: 'People do judge a book by its cover. We may have the best product, but if we present it in a slipshod manner, it will be perceived as slipshod.',
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M2 12h20M12 2v20" />
+          <circle cx="12" cy="12" r="8" />
+        </svg>
+      )
+    },
+  ];
+
+  const timeline = [
+    { year: '1955', event: 'Birth', description: 'Born in San Francisco, California. Adopted by Paul and Clara Jobs.' },
+    { year: '1972', event: 'Reed College Dropout', description: 'Enrolled at Reed College but dropped out after six months, continuing to audit classes including calligraphy.' },
+    { year: '1976', event: 'Apple Computer founded', description: 'Started in a garage with Steve Wozniak.' },
+    { year: '1984', event: 'Macintosh introduced', description: 'The computer that changed everything.' },
+    { year: '1985', event: 'NeXT Computer', description: 'A new beginning. Advanced computing for education and business.' },
+    { year: '1986', event: 'Pixar', description: 'Acquired Lucasfilm\'s computer graphics division.' },
+    { year: '1997', event: 'Return to Apple', description: 'Think Different. The turnaround begins.' },
+    { year: '2001', event: 'iPod', description: '1,000 songs in your pocket.' },
+    { year: '2007', event: 'iPhone', description: 'Apple reinvents the phone.' },
+    { year: '2010', event: 'iPad', description: 'A magical and revolutionary device Half laptop, Half phone.' },
+    { year: '2011', event: 'Death', description: 'Passed away at the age of 56 after a long battle with pancreatic cancer. His legacy continues to inspire millions of people across the globe.' },
+  ];
+
+  return (
+    <div className="bg-white text-gray-900 selection:bg-gray-900 selection:text-white overflow-x-hidden">
+      {/* Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-[100] origin-left"
+        style={{ scaleX }}
+      />
+
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100/50 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="flex items-center justify-between h-20">
+            <button
+              onClick={() => scrollToSection('hero')}
+              className="flex items-center gap-3 group"
+            >
+              <div className="relative w-8 h-8 overflow-hidden rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors">
+                <Image
+                  src="/apple.webp"
+                  alt="Logo"
+                  fill
+                  className="object-cover p-1.5 opacity-80 group-hover:opacity-100 transition-opacity"
+                />
+              </div>
+              <span className="text-lg font-medium tracking-tight">Steve Jobs</span>
+            </button>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-8">
+              {['Principles', 'Products', 'Journey', 'Contact'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(item.toLowerCase())}
+                  className={`text-sm font-medium transition-colors hover:text-gray-600 ${activeSection === item.toLowerCase() ? 'text-gray-900' : 'text-gray-400'
+                    }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2 text-gray-600"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="md:hidden overflow-hidden bg-white border-b border-gray-100"
+            >
+              <div className="px-6 py-4 space-y-2">
+                {['Principles', 'Products', 'Journey', 'Contact'].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => scrollToSection(item.toLowerCase())}
+                    className="block w-full text-left py-3 text-lg font-medium text-gray-600 hover:text-gray-900"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden" ref={heroRef}>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-gray-100/50 via-white to-white -z-10" />
+
+        <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              style={{ y: heroY, opacity: heroOpacity }}
+              className="space-y-8 z-10"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <h1 className="text-6xl md:text-8xl font-semibold tracking-tighter leading-[0.9] mb-6">
+                  Think <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900">
+                    Different.
+                  </span>
+                </h1>
+                <p className="text-xl md:text-2xl text-gray-500 max-w-lg leading-relaxed font-light">
+                  Design is not just what it looks like and feels like. Design is how it works.
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap gap-4"
+              >
+                <button
+                  onClick={() => scrollToSection('products')}
+                  className="px-8 py-4 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                >
+                  Explore Legacy <ChevronRight size={18} />
+                </button>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="relative lg:h-[800px] flex items-center justify-center"
+            >
+              <div className="relative w-full aspect-[4/5] lg:aspect-auto lg:h-full">
+                <Image
+                  src="/jobs.webp"
+                  alt="Steve Jobs"
+                  fill
+                  className="object-contain object-center drop-shadow-2xl"
+                  priority
+                />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Principles Section */}
+      <section id="principles" className="py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">Core Principles</h2>
+            <div className="h-1 w-20 bg-gray-900 rounded-full" />
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            {principles.map((principle, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+              >
+                <div className="mb-6 text-gray-900">{principle.icon}</div>
+                <h3 className="text-2xl font-semibold mb-4">{principle.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-lg font-light">{principle.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section id="products" className="py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">The Work</h2>
+            <p className="text-xl text-gray-500 max-w-2xl">
+              Products that didn&apos;t just improve on what came before, but completely reimagined what was possible.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6">
+            {products.map((product) => (
+              <motion.div
+                key={product.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                onClick={() => setExpandedProduct(expandedProduct === product.id ? null : product.id)}
+                className={`group cursor-pointer rounded-3xl overflow-hidden border border-gray-100 transition-all duration-500 ${expandedProduct === product.id ? 'bg-gray-50 shadow-2xl ring-1 ring-gray-900/5' : 'bg-white hover:shadow-lg hover:border-gray-200'
+                  }`}
+              >
+                <div className="p-8 md:p-12">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div className="flex items-center gap-6">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${product.color} flex items-center justify-center text-white shadow-lg`}>
+                        <span className="text-2xl font-bold">{product.name[0]}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-2xl md:text-3xl font-semibold text-gray-900">{product.name}</h3>
+                        <p className="text-gray-500 font-medium">{product.year}</p>
+                      </div>
+                    </div>
+                    <motion.div
+                      animate={{ rotate: expandedProduct === product.id ? 180 : 0 }}
+                      className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 group-hover:bg-gray-200 transition-colors"
+                    >
+                      <ChevronDown size={20} />
+                    </motion.div>
+                  </div>
+
+                  <AnimatePresence>
+                    {expandedProduct === product.id && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-12 grid md:grid-cols-3 gap-12 border-t border-gray-200 mt-12">
+                          <div className="space-y-3">
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">The Problem</h4>
+                            <p className="text-gray-700 leading-relaxed">{product.problem}</p>
+                          </div>
+                          <div className="space-y-3">
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">The Solution</h4>
+                            <p className="text-gray-700 leading-relaxed">{product.solution}</p>
+                          </div>
+                          <div className="space-y-3">
+                            <h4 className="text-sm font-bold uppercase tracking-wider text-gray-400">The Impact</h4>
+                            <p className="text-gray-700 leading-relaxed">{product.impact}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Journey Section */}
+      <section id="journey" className="py-32 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-20"
+          >
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">The Journey</h2>
+            <p className="text-xl text-gray-400 max-w-2xl">
+              A timeline of innovation, failure, and redemption.
+            </p>
+          </motion.div>
+
+          <div className="relative ml-4 md:ml-0">
+            {/* Mobile Line */}
+            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-800 md:hidden" />
+
+            {/* Desktop Line */}
+            <div className="absolute left-[232px] top-0 bottom-0 w-0.5 bg-gray-800 hidden md:block" />
+
+            {timeline.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="mb-16 relative pl-12 md:pl-0"
+              >
+                <div className="md:grid md:grid-cols-[200px_1fr] md:gap-16 items-start">
+                  <div className="md:text-right">
+                    <span className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                      {item.year}
+                    </span>
+                  </div>
+
+                  <div className="relative">
+                    {/* Dot */}
+                    <div className="absolute -left-[53px] md:-left-[40px] top-2 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-gray-900" />
+
+                    <h3 className="text-2xl font-semibold mb-2">{item.event}</h3>
+                    <p className="text-gray-400 text-lg font-light leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact / Footer */}
+      <section id="contact" className="py-32 bg-white text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter text-gray-900">
+              Stay Hungry. <br />
+              <span className="text-gray-400">Stay Foolish.</span>
+            </h2>
+            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+              Your time is limited, so don&apos;t waste it living someone else&apos;s life.
+            </p>
+
+            <div className="pt-8">
+              <a
+                href="https://en.wikipedia.org/wiki/Steve_Jobs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-100 text-gray-900 rounded-full font-medium hover:bg-gray-200 transition-colors"
+              >
+                Read Biography <ExternalLink size={18} />
+              </a>
+            </div>
+
+            <div className="pt-16 mt-16 border-t border-gray-200">
+              <p className="text-gray-500 text-lg">
+                Made by Kamalesh Motamarri for the 🐐 Steve Jobs
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Back to Top */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: scrollYProgress.get() > 0.1 ? 1 : 0 }}
+        onClick={() => scrollToSection('hero')}
+        className="fixed bottom-8 right-8 p-4 bg-gray-900 text-white rounded-full shadow-xl z-40 hover:bg-gray-800 transition-colors"
+      >
+        <ArrowUp size={24} />
+      </motion.button>
+    </div>
+  );
+}
