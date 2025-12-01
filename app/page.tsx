@@ -46,15 +46,21 @@ export default function Home() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      const navHeight = 80;
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - navHeight;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+      // Close mobile menu first
       setMobileMenuOpen(false);
+      
+      // Wait a bit for menu to close, then scroll
+      setTimeout(() => {
+        const nav = document.querySelector('nav');
+        const navHeight = nav ? nav.offsetHeight : 80;
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - navHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }, 100);
     }
   };
 
