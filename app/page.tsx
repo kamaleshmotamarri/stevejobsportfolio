@@ -196,7 +196,7 @@ export default function Home() {
           <div className="flex items-center justify-between h-16 sm:h-20">
             <button
               onClick={() => scrollToSection('hero')}
-              className="flex items-center gap-2 sm:gap-3 group"
+              className="flex items-center gap-2 sm:gap-3 group z-10"
             >
               <div className="relative w-7 h-7 sm:w-8 sm:h-8 overflow-hidden rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors">
                 <Image
@@ -225,8 +225,9 @@ export default function Home() {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 text-gray-600"
+              className="md:hidden p-2 text-gray-600 z-10 relative"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -234,20 +235,21 @@ export default function Home() {
         </div>
 
         {/* Mobile Menu */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {mobileMenuOpen && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="md:hidden overflow-hidden bg-white border-b border-gray-100"
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="md:hidden overflow-hidden bg-white border-b border-gray-100 relative z-40"
             >
-              <div className="px-6 py-4 space-y-2">
+              <div className="px-4 sm:px-6 py-4 space-y-1">
                 {['Principles', 'Products', 'Journey', 'Learn More'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item.toLowerCase())}
-                    className="block w-full text-left py-3 text-lg font-medium text-gray-600 hover:text-gray-900"
+                    className="block w-full text-left py-3 px-2 text-lg font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     {item}
                   </button>
