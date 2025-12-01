@@ -24,7 +24,7 @@ export default function Home() {
   // Active section detection
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'principles', 'products', 'journey', 'contact'];
+      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'contact'];
       const scrollPosition = window.scrollY + 300;
 
       for (const section of sections) {
@@ -217,11 +217,11 @@ export default function Home() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              {['Principles', 'Products', 'Journey', 'Learn More'].map((item) => (
+              {['Principles', 'Products', 'Journey', 'Fun Facts', 'Learn More'].map((item) => (
                 <button
                   key={item}
-                  onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item.toLowerCase())}
-                  className={`text-sm font-medium transition-colors hover:text-gray-600 ${activeSection === (item === 'Learn More' ? 'contact' : item.toLowerCase()) ? 'text-gray-900' : 'text-gray-400'
+                  onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase())}
+                  className={`text-sm font-medium transition-colors hover:text-gray-600 ${activeSection === (item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase()) ? 'text-gray-900' : 'text-gray-400'
                     }`}
                 >
                   {item}
@@ -251,10 +251,10 @@ export default function Home() {
               className="md:hidden overflow-hidden bg-white border-b border-gray-100 relative z-40"
             >
               <div className="px-4 sm:px-6 py-4 space-y-1">
-                {['Principles', 'Products', 'Journey', 'Learn More'].map((item) => (
+                {['Principles', 'Products', 'Journey', 'Fun Facts', 'Learn More'].map((item) => (
                   <button
                     key={item}
-                    onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item.toLowerCase())}
+                    onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase())}
                     className="block w-full text-left py-3 px-2 text-lg font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     {item}
@@ -490,6 +490,107 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Fun Facts Section */}
+      <section id="funfacts" className="py-16 sm:py-24 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 md:mb-20"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-4 md:mb-6">Fun Facts</h2>
+            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl">
+              Surprising details about the man behind the legend.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-gray-50 p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
+                  2.6
+                </div>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 md:mb-4 text-gray-900">High School GPA</h3>
+              <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                Despite his later success, Steve Jobs had a 2.6 GPA in high school. He was more interested in electronics and pranks than traditional academics.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-gray-50 p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
+                    <polygon points="12 15 17 21 7 21 12 15" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 md:mb-4 text-gray-900">License Plate Strategy</h3>
+              <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                Jobs got a new Mercedes every six months so he wouldn&apos;t have to put a license plate on it. California law gave new car owners six months before requiring plates.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-gray-50 p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-pink-400 to-rose-500 flex items-center justify-center text-white">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 md:mb-4 text-gray-900">Biological Sister</h3>
+              <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                Jobs was adopted at birth and didn&apos;t meet his biological sister, Mona Simpson, until he was 27 years old. They later became very close.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="bg-gray-50 p-6 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+            >
+              <div className="mb-4 md:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                </div>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 md:mb-4 text-gray-900">Pescatarian Diet</h3>
+              <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                Jobs was a pescatarian and was known for eating the same meal for weeks at a time. He particularly favored carrot salad and would often eat it exclusively for extended periods.
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
