@@ -24,7 +24,7 @@ export default function Home() {
   // Active section detection
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'contact'];
+      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'watchfilms', 'contact'];
       const scrollPosition = window.scrollY + 300;
 
       for (const section of sections) {
@@ -217,11 +217,11 @@ export default function Home() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              {['Principles', 'Products', 'Journey', 'Fun Facts', 'Learn More'].map((item) => (
+              {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More'].map((item) => (
                 <button
                   key={item}
-                  onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase())}
-                  className={`text-sm font-medium transition-colors hover:text-gray-600 ${activeSection === (item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase()) ? 'text-gray-900' : 'text-gray-400'
+                  onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item === 'Watch Films' ? 'watchfilms' : item.toLowerCase())}
+                  className={`text-sm font-medium transition-colors hover:text-gray-600 ${activeSection === (item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item === 'Watch Films' ? 'watchfilms' : item.toLowerCase()) ? 'text-gray-900' : 'text-gray-400'
                     }`}
                 >
                   {item}
@@ -251,10 +251,10 @@ export default function Home() {
               className="md:hidden overflow-hidden bg-white border-b border-gray-100 relative z-40"
             >
               <div className="px-4 sm:px-6 py-4 space-y-1">
-                {['Principles', 'Products', 'Journey', 'Fun Facts', 'Learn More'].map((item) => (
+                {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More'].map((item) => (
                   <button
                     key={item}
-                    onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item.toLowerCase())}
+                    onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item === 'Watch Films' ? 'watchfilms' : item.toLowerCase())}
                     className="block w-full text-left py-3 px-2 text-lg font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     {item}
@@ -591,6 +591,112 @@ export default function Home() {
                 Jobs was a pescatarian and was known for eating the same meal for weeks at a time. He particularly favored carrot salad and would often eat it exclusively for extended periods.
               </p>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Watch Films Section */}
+      <section id="watchfilms" className="py-16 sm:py-24 md:py-32 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 md:mb-20"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-4 md:mb-6">Watch Films</h2>
+            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl">
+              Explore the life and legacy of Steve Jobs through these compelling films and documentaries.
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+            <motion.a
+              href="https://www.google.com/search?q=Jobs+2013+movie+Steve+Jobs+Ashton+Kutcher"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer block"
+            >
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
+                <Image
+                  src="/stevejobs2013.jpg"
+                  alt="Steve Jobs (2013)"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">Steve Jobs (2013)</h3>
+                  <ExternalLink size={18} className="text-gray-400 flex-shrink-0 ml-2" />
+                </div>
+                <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                  A biographical drama film directed by Joshua Michael Stern, starring Ashton Kutcher as Steve Jobs.
+                </p>
+              </div>
+            </motion.a>
+
+            <motion.a
+              href="https://tv.apple.com/us/movie/steve-jobs/umc.cmc.20qugmesej4yg33x3e4uev8xh"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer block"
+            >
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
+                <Image
+                  src="/stevejobs2015.jpg"
+                  alt="Steve Jobs (2015)"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">Steve Jobs (2015)</h3>
+                  <ExternalLink size={18} className="text-gray-400 flex-shrink-0 ml-2" />
+                </div>
+                <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                  A biographical drama film directed by Danny Boyle, starring Michael Fassbender as Steve Jobs.
+                </p>
+              </div>
+            </motion.a>
+
+            <motion.a
+              href="https://www.google.com/search?q=Steve+Jobs+documentary"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 cursor-pointer block sm:col-span-2 lg:col-span-1"
+            >
+              <div className="relative w-full aspect-[3/4] overflow-hidden">
+                <Image
+                  src="/stevejobsdocumentary.jpg"
+                  alt="Steve Jobs Documentary"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">Steve Jobs Documentary</h3>
+                  <ExternalLink size={18} className="text-gray-400 flex-shrink-0 ml-2" />
+                </div>
+                <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                  An in-depth documentary exploring the life, work, and impact of Steve Jobs on technology and innovation.
+                </p>
+              </div>
+            </motion.a>
           </div>
         </div>
       </section>
