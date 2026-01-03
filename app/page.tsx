@@ -24,7 +24,7 @@ export default function Home() {
   // Active section detection
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'watchfilms', 'contact'];
+      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'watchfilms', 'stanfordspeech', 'contact'];
       const scrollPosition = window.scrollY + 300;
 
       for (const section of sections) {
@@ -698,6 +698,56 @@ export default function Home() {
               </div>
             </motion.a>
           </div>
+        </div>
+      </section>
+
+      {/* Stanford Speech Section */}
+      <section id="stanfordspeech" className="py-16 sm:py-24 md:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 md:mb-20"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight mb-4 md:mb-6">Stanford Speech</h2>
+            <p className="text-lg sm:text-xl text-gray-500 max-w-2xl">
+              One of the most inspiring commencement speeches in history.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 shadow-lg"
+          >
+            <div className="relative w-full aspect-video overflow-hidden bg-gray-900">
+              <iframe
+                src="https://www.youtube.com/embed/UF8uR6Z6KLc"
+                title="Steve Jobs Stanford Commencement Speech"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-900">Stanford Commencement</h3>
+                <a
+                  href="https://youtu.be/UF8uR6Z6KLc?si=2e9gxGeYoZ8gnJhm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <ExternalLink size={18} className="flex-shrink-0 ml-2" />
+                </a>
+              </div>
+              <p className="text-gray-600 leading-relaxed text-base sm:text-lg font-light">
+                In 2005, Steve Jobs delivered one of the most inspiring commencement speeches in history. He shared three stories from his life—connecting the dots, love and loss, and death—reminding graduates that their time is limited, so they must follow their hearts and intuition.
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
