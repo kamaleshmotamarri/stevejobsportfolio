@@ -5,10 +5,50 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronDown, ExternalLink, Menu, X, ArrowUp } from 'lucide-react';
 
+const quizQuestions = [
+  {
+    question: "In what year did Steve Jobs co-found Apple Computer?",
+    options: ["1974", "1976", "1980", "1984"],
+    correct: 1,
+  },
+  {
+    question: "Which animation studio did Steve Jobs purchase from George Lucas in 1986?",
+    options: ["DreamWorks", "Illumination", "Pixar", "Studio Ghibli"],
+    correct: 2,
+  },
+  {
+    question: "What was the name of the computer Steve Jobs created after leaving Apple in 1985?",
+    options: ["Lisa", "NeXT", "Macintosh II", "Apollo"],
+    correct: 1,
+  }
+];
+
 export default function Home() {
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null);
+
+  const [currentQuizQuestion, setCurrentQuizQuestion] = useState(0);
+  const [quizScore, setQuizScore] = useState(0);
+  const [showQuizResult, setShowQuizResult] = useState(false);
+
+  const handleQuizAnswer = (selectedIndex: number) => {
+    if (selectedIndex === quizQuestions[currentQuizQuestion].correct) {
+      setQuizScore(s => s + 1);
+    }
+    const nextQ = currentQuizQuestion + 1;
+    if (nextQ < quizQuestions.length) {
+      setCurrentQuizQuestion(nextQ);
+    } else {
+      setShowQuizResult(true);
+    }
+  };
+
+  const resetQuiz = () => {
+    setCurrentQuizQuestion(0);
+    setQuizScore(0);
+    setShowQuizResult(false);
+  };
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -24,7 +64,7 @@ export default function Home() {
   // Active section detection
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'watchfilms', 'stanfordspeech', 'contact'];
+      const sections = ['hero', 'principles', 'products', 'journey', 'funfacts', 'watchfilms', 'stanfordspeech', 'quiz', 'contact'];
       const scrollPosition = window.scrollY + 300;
 
       for (const section of sections) {
@@ -48,7 +88,7 @@ export default function Home() {
     if (element) {
       // Close mobile menu first
       setMobileMenuOpen(false);
-      
+
       // Wait a bit for menu to close, then scroll
       setTimeout(() => {
         const nav = document.querySelector('nav');
@@ -217,7 +257,7 @@ export default function Home() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More'].map((item) => (
+              {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More', 'Quiz'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item === 'Watch Films' ? 'watchfilms' : item.toLowerCase())}
@@ -251,7 +291,7 @@ export default function Home() {
               className="md:hidden overflow-hidden bg-white border-b border-gray-100 relative z-40"
             >
               <div className="px-4 sm:px-6 py-4 space-y-1">
-                {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More'].map((item) => (
+                {['Principles', 'Products', 'Journey', 'Fun Facts', 'Watch Films', 'Learn More', 'Quiz'].map((item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item === 'Learn More' ? 'contact' : item === 'Fun Facts' ? 'funfacts' : item === 'Watch Films' ? 'watchfilms' : item.toLowerCase())}
@@ -749,6 +789,87 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Quiz Section */}
+      <section id="quiz" className="py-16 sm:py-24 md:py-32 bg-gray-50 border-t border-gray-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 md:mb-16 text-center"
+          >
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight mb-4">How well do you know Steve?</h2>
+            <p className="text-lg text-gray-500">Take this short trivia quiz about his life and legacy.</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100"
+          >
+            {!showQuizResult ? (
+              <div>
+                <div className="flex justify-between items-center mb-8 text-sm font-medium text-gray-400 uppercase tracking-wider">
+                  <span>Question {currentQuizQuestion + 1} of {quizQuestions.length}</span>
+                  <span>Score: {quizScore}</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-medium text-gray-900 mb-8 leading-tight">
+                  {quizQuestions[currentQuizQuestion].question}
+                </h3>
+                <div className="space-y-4">
+                  {quizQuestions[currentQuizQuestion].options.map((option, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleQuizAnswer(idx)}
+                      className="w-full text-left px-6 py-4 rounded-xl border border-gray-200 hover:border-gray-900 hover:bg-gray-50 transition-all font-medium text-gray-700 text-lg"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 flex items-center justify-center text-white text-3xl font-bold mb-6">
+                  {quizScore}/{quizQuestions.length}
+                </div>
+                <h3 className="text-3xl font-semibold text-gray-900 mb-4">
+                  {quizScore === quizQuestions.length ? "Incredible!" : quizScore > 0 ? "Good Job!" : "Keep learning!"}
+                </h3>
+                <p className="text-gray-500 text-lg mb-8">
+                  You scored {quizScore} out of {quizQuestions.length} on the Steve Jobs trivia.
+                </p>
+                <button
+                  onClick={resetQuiz}
+                  className="px-8 py-4 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
+                >
+                  Retake Quiz
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Tribute Image Section */}
+      <section className="relative w-full h-[60vh] sm:h-[80vh] overflow-hidden bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="absolute inset-0"
+        >
+          <Image
+            src="/jobstribute.webp"
+            alt="Steve Jobs Tribute"
+            fill
+            className="object-cover object-[center_20%] opacity-80"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+        </motion.div>
       </section>
 
       {/* Contact / Footer */}
